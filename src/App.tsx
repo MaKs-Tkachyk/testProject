@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
+import {  Input } from "antd";
+import { FC } from "react";
+import "./App.css";
+import Todo from "./Todo";
+
+const App: FC = () => {
+  const { Search } = Input;
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="todos-list">
+        <div className="todos-list__header">Todos (5)</div>
+        <div className="todos-list__container">
+          <div className="todos-list__add-todo">
+            <Search className="todos-list__search"  placeholder="Enter todo here"
+              enterButton="Submit" onSearch={()=>{}}
+            />
+          </div>
+          <div className="todos">
+            <Todo />
+          </div>
+        </div>
+      </div>
     </div>
   );
-}
+};
 
 export default App;
