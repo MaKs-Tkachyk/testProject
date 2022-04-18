@@ -1,23 +1,34 @@
-
-import {  Input } from "antd";
 import { FC } from "react";
 import "./App.css";
-import Todo from "./Todo";
+import Search from "./Elements/Search";
+import { useAppDispatch, useAppSelector } from "./hooks/redux";
+import Todo from "./Elements/Todo";
+import { todoListType, todoSlice } from "./Redux/todoSlice";
+
+
 
 const App: FC = () => {
-  const { Search } = Input;
+
+
+  const {todoList} = useAppSelector(state=>state.todoSlice)
+  const dispatch = useAppDispatch()
+  const {pushNewTodo}=todoSlice.actions
+  
+  const push = ({id,title,isChecked}:todoListType)=>{
+     dispatch(pushNewTodo({id:new Date().getTime(),title,isChecked}))
+  }
+
+
   return (
     <div className="App">
       <div className="todos-list">
         <div className="todos-list__header">Todos (5)</div>
         <div className="todos-list__container">
           <div className="todos-list__add-todo">
-            <Search className="todos-list__search"  placeholder="Enter todo here"
-              enterButton="Submit" onSearch={()=>{}}
-            />
+            <Search onClick={push}/>
           </div>
           <div className="todos">
-            <Todo />
+          { todoList.map(elem=><Todo key={elem.id} {...elem} />) }
           </div>
         </div>
       </div>
