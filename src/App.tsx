@@ -1,19 +1,22 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import "./App.css";
 import Search from "./Elements/Search";
 import { useAppDispatch, useAppSelector } from "./hooks/redux";
 import Todo from "./Elements/Todo";
 import { todoListType, todoSlice } from "./Redux/todoSlice";
-
+import store from 'storejs';
 
 
 const App: FC = () => {
-
-
+  
   const {todoList} = useAppSelector(state=>state.todoSlice)
   const dispatch = useAppDispatch()
-  const {pushNewTodo}=todoSlice.actions
+  const {pushNewTodo,setTodoListWithLocalStorage}=todoSlice.actions
   
+  useEffect(()=>{
+    dispatch(setTodoListWithLocalStorage(store.get("todoList")))  
+  },[])
+
   const push = ({id,title,isChecked}:todoListType)=>{
      dispatch(pushNewTodo({id:new Date().getTime(),title,isChecked}))
   }

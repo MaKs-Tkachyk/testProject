@@ -1,6 +1,6 @@
 import { DeleteOutlined, FormOutlined } from "@ant-design/icons";
 import { Checkbox } from "antd";
-import  { FC, useState } from "react";
+import  { FC, useEffect, useState } from "react";
 import "../App.css";
 import { useAppDispatch } from "../hooks/redux";
 import { todoListType, todoSlice } from "../Redux/todoSlice";
@@ -22,20 +22,25 @@ const Todo: FC<todoType> = ({id,title,isChecked}) => {
 
    const [update,setUpdate] = useState<boolean>(false)
    const [check ,setCheck] = useState<boolean>(isChecked)
-
-   const updateTodo = ({title,isChecked}:todoListType)=>{
-    dispatch(updateTodoList({id:id,title,isChecked}))
+   
+   const updateTodo = ({title}:todoListType)=>{
+    dispatch(updateTodoList({id:id,title,isChecked:check}))
     setUpdate(false)
   }
+   
+
+
+  useEffect(()=>{
+    updateTodo({id,title,isChecked:check})
+  },[check])
 
 
   return (
            <div className="todo">
        { update === true 
           ?<Search valueTitle={title} onClick={updateTodo}/>  
-          : <> <Checkbox className="Checkbox" checked={check} onClick={()=>{
-                updateTodo({id,title,isChecked:check})
-                setCheck(pre=>!pre)}}>{title}
+          : <> <Checkbox className="Checkbox" value={check} checked={check} onChange={(e)=>{setCheck(e.target.checked)}}>
+                   {title}
                </Checkbox>
               <div className="todo__change">
                 <FormOutlined onClick={()=>setUpdate(true)}  className="FormOutlined"/>
